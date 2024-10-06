@@ -79,6 +79,7 @@ class StatsWindDirectionDisplay(
 
     override fun update(name: String, data: SWeatherInfo) {
        getInfo.forEach {
+           println("$name:")
            val info = it()
            if (mMin > info) {
                mMin = info

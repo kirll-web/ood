@@ -5,16 +5,15 @@ fun main() {
     var wdOut = WeatherData("WeatherDataOut")
 
     var display = CDisplay()
-    wdIn.registerObserver(7, display)
-    wdOut.registerObserver(8, display)
+    wdIn.registerObserver(0, display)
+    wdOut.registerObserver(0, display)
 
-    //todo: индикаторы должны отображать информацию сразу двух weatherData
-    var temperatureDisplay = StatsDisplay(
+    val temperatureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("temperature"),
         getInfo = listOf(wdIn::getTemperature, wdOut::getTemperature)
     )
 
-    var humidityDisplay = StatsDisplay(
+    val humidityDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("humidity"),
         getInfo = listOf(wdIn::getHumidity, wdOut::getHumidity),
     )
@@ -26,23 +25,19 @@ fun main() {
 
     val windSpeed = StatsDisplay(
         informationDisplay = CInformationDisplay("wind  speed"),
-        getInfo = wd::getWindSpeed
+        getInfo = listOf(wdOut::getWindSpeed),
     )
 
     val windDirection = StatsWindDirectionDisplay(
         informationDisplay = CInformationDisplay("wind direction"),
-        getInfo = wd::getWindDirection
+        getInfo = listOf(wdOut::getWindSpeed),
     )
 
     wdIn.registerObserver(2, temperatureDisplay)
-    wdIn.registerObserver(4, humidityDisplay)
+    wdIn.registerObserver(3, humidityDisplay)
     wdIn.registerObserver(1, pressureDisplay)
-    wdOut.registerObserver(5, temperatureDisplay)
-    wdOut.registerObserver(6, humidityDisplay)
-    wdOut.registerObserver(7, pressureDisplay)
-
-    wd.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
-    wd.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
+    wdOut.registerObserver(4, windDirection)
+    wdOut.registerObserver(5, windSpeed)
 
     wdIn.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
     wdIn.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
