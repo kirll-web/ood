@@ -1,24 +1,27 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val wd = WeatherData()
+    var wdIn = WeatherData("WeatherDataIn")
+    var wdOut = WeatherData("WeatherDataOut")
 
-    val display = CDisplay()
-    wd.registerObserver(0, display)
+    var display = CDisplay()
+    wdIn.registerObserver(7, display)
+    wdOut.registerObserver(8, display)
 
-    val temperatureDisplay = StatsDisplay(
+    //todo: индикаторы должны отображать информацию сразу двух weatherData
+    var temperatureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("temperature"),
-        getInfo = wd::getTemperature
+        getInfo = listOf(wdIn::getTemperature, wdOut::getTemperature)
     )
 
-    val humidityDisplay = StatsDisplay(
+    var humidityDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("humidity"),
-        getInfo = wd::getHumidity
+        getInfo = listOf(wdIn::getHumidity, wdOut::getHumidity),
     )
 
-    val pressureDisplay = StatsDisplay(
+    var pressureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("pressure"),
-        getInfo = wd::getPressure
+        getInfo = listOf(wdIn::getPressure, wdOut::getPressure),
     )
 
     val windSpeed = StatsDisplay(
@@ -31,17 +34,19 @@ fun main() {
         getInfo = wd::getWindDirection
     )
 
-    wd.registerObserver(2, temperatureDisplay)
-    wd.registerObserver(4, humidityDisplay)
-    wd.registerObserver(1, pressureDisplay)
-    wd.registerObserver(5, windSpeed)
-    wd.registerObserver(3, windDirection)
+    wdIn.registerObserver(2, temperatureDisplay)
+    wdIn.registerObserver(4, humidityDisplay)
+    wdIn.registerObserver(1, pressureDisplay)
+    wdOut.registerObserver(5, temperatureDisplay)
+    wdOut.registerObserver(6, humidityDisplay)
+    wdOut.registerObserver(7, pressureDisplay)
 
     wd.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
     wd.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
 
-    wd.removeObserver(4)
+    wdIn.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
+    wdIn.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
 
-    wd.setMeasurements(10.0, 0.8, 761.0, 50.9, 80.0)
-    wd.setMeasurements(-10.0, 0.8, 761.0, 50.9, 90.0)
+    wdOut.setMeasurements(20.0, 40.7, 360.0, 50.9, 30.0)
+    wdOut.setMeasurements(40.0, 60.8, 551.0, 100.9, 70.0)
 }
