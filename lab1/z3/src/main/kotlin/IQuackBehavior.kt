@@ -1,0 +1,3 @@
+interface IQuackBehavior {
+    fun quack()
+}
