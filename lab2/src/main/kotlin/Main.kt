@@ -1,5 +1,5 @@
-package org.example
-
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     val wd = WeatherData()
 
@@ -8,17 +8,21 @@ fun main() {
 
     val temperatureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("temperature"),
-        getInfo = wd::getTemperature
-    )
+        getInfo = wd::getTemperature,
+        removeObserver = { observer -> wd.removeObserver(observer) })
 
     val humidityDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("humidity"),
-        getInfo = wd::getHumidity
+        getInfo = wd::getHumidity,
+        removeObserver = { observer ->
+            wd.removeObserver(observer)
+        }
     )
 
     val pressureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("pressure"),
-        getInfo = wd::getPressure
+        getInfo = wd::getPressure,
+        removeObserver = { observer -> wd.removeObserver(observer) }
     )
 
     wd.registerObserver(temperatureDisplay)
