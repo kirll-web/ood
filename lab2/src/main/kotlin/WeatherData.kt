@@ -4,17 +4,23 @@ data class SWeatherInfo(
     var pressure: Double = 0.0
 )
 
-class CDisplay : IObserver<SWeatherInfo> {
-    override fun update(data: SWeatherInfo) {
+
+class CDisplay(
+    override val token: Token
+) : IObserver<SWeatherInfo> {
+    override fun update(name: String, data: SWeatherInfo) {
+        println("$name:")
         informationDisplay.display(data.temperature, data.humidity, data.pressure)
     }
 
     override val informationDisplay: IInformationDisplay = CWeatherDisplay()
-    override val getInfo: () -> Double = { 0.0 }
+    override val getInfo: List<() -> Double> = emptyList()
 }
 
 class StatsDisplay(
-    override val getInfo: () -> Double,
+    val removeObserver: (observer: IObserver<SWeatherInfo>) -> Unit,
+    override val token: Token,
+    override val getInfo: List<() -> Double>,
     override val informationDisplay: IInformationDisplay
 ) : IObserver<SWeatherInfo> {
     private var mMin: Double = Double.POSITIVE_INFINITY
@@ -23,24 +29,26 @@ class StatsDisplay(
     private var mCountAcc: UInt = 0u
 
 
-    override fun update(data: SWeatherInfo) {
-        val info = getInfo()
-        if (mMin > info) {
-            mMin = info
-        }
-        if (mMax < info) {
-            mMax = info
-        }
-        mAcc += info
-        ++mCountAcc
+    override fun update(name: String, data: SWeatherInfo) {
+        getInfo.forEach {
+            println("$name:")
+            val info = it()
+            if (mMin > info) {
+                mMin = info
+            }
+            if (mMax < info) {
+                mMax = info
+            }
+            mAcc += info
+            ++mCountAcc
 
-        informationDisplay.display(mMin, mMax, mAcc / mCountAcc.toDouble())
+            informationDisplay.display(mMin, mMax, mAcc / mCountAcc.toDouble())
+        }
     }
-
 }
 
 
-class WeatherData : Observable<SWeatherInfo>() {
+class WeatherData(override val name: String) : Observable<SWeatherInfo>() {
     private var mTemperature: Double = 0.0
     private var mHumidity: Double = 0.0
     private var mPressure: Double = 760.0
@@ -81,7 +89,7 @@ class WeatherData : Observable<SWeatherInfo>() {
 
 class CInformationDisplay(
     private val name: String,
-): IInformationDisplay {
+) : IInformationDisplay {
     override fun display(v1: Double, v2: Double, v3: Double) {
         println("Max $name $v1")
         println("Min $name $v2")
@@ -90,7 +98,7 @@ class CInformationDisplay(
     }
 }
 
-class CWeatherDisplay: IInformationDisplay {
+class CWeatherDisplay : IInformationDisplay {
     override fun display(v1: Double, v2: Double, v3: Double) {
         println("Current Temp $v1")
         println("Current Hum $v2")
