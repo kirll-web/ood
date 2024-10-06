@@ -7,45 +7,45 @@
 
 interface IObserver<T>{
     val informationDisplay: IInformationDisplay
-    val getInfo: () -> Double //() -> Double
+    val getInfo: () -> Double
     open fun update(data: T)
 }
-
 /*
 Шаблонный интерфейс IObservable. Позволяет подписаться и отписаться на оповещения, а также
 инициировать рассылку уведомлений зарегистрированным наблюдателям.
 */
 interface IObservable<T>{
-    open fun registerObserver(observer: IObserver<T>)
+    open fun registerObserver(token: Token, observer: IObserver<T>)
     open fun notifyObservers()
-    open fun removeObserver(observer: IObserver<T>)
+    open fun removeObserver(token: Token)
 }
 
+typealias Token = Int
 // Реализация интерфейса IObservable
 abstract class Observable<T> : IObservable<T> {
-    private var mObservers: MutableSet<IObserver<T>> = mutableSetOf()
-
+    private var mObservers: MutableMap<Token, IObserver<T>> = mutableMapOf()
+    // todo токены не должны удаляться за линейное время //fix
     // Классы-наследники должны перегрузить данный метод,
     // в котором возвращать информацию об изменениях в объекте
     abstract fun getChangedData(): T
 
-    override fun registerObserver(observer: IObserver<T>) {
-        //todo один и тот же наблюдатель должен получать 1 раз(поправить) //fix
-        mObservers.add(observer)
+    override fun registerObserver(token: Token, observer: IObserver<T>) {
+        mObservers[token] = observer
     }
 
     override fun notifyObservers() {
         val data = getChangedData()
-        val tempObservers = buildSet {
-            addAll(mObservers)
+        val temp = mutableMapOf<Token, IObserver<T>>()
+        temp.putAll(mObservers)
+        temp.forEach {
+            it.value.update(data)
+            mObservers.remove(it.key)
         }
-        tempObservers.forEach {
-            it.update(data)
-        }
+
     }
 
-    override fun removeObserver(observer: IObserver<T>) {
-        mObservers.remove(observer)
+    override fun removeObserver(token: Token) {
+        mObservers.remove(token)
     }
 }
 
