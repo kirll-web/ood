@@ -1,42 +1,36 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    var wdIn = WeatherData("WeatherDataIn") //todo: должно быть два объекта weatherData
-    var wdOut = WeatherData("WeatherDataOut") //todo: должно быть два объекта weatherData
+    var wdIn = WeatherData("WeatherDataIn")
+    var wdOut = WeatherData("WeatherDataOut")
 
-    var display = CDisplay(0)
-    wdIn.registerObserver(display)
-    wdOut.registerObserver(display)
+    var display = CDisplay()
+    wdIn.registerObserver(7, display)
+    wdOut.registerObserver(8, display)
 
     //todo: индикаторы должны отображать информацию сразу двух weatherData
     var temperatureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("temperature"),
-        getInfo = listOf(wdIn::getTemperature, wdOut::getTemperature),
-        token = 4,
-        removeObserver = { observer -> wdIn.removeObserver(observer.token) }
+        getInfo = listOf(wdIn::getTemperature, wdOut::getTemperature)
     )
 
     var humidityDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("humidity"),
         getInfo = listOf(wdIn::getHumidity, wdOut::getHumidity),
-        token = 2,
-        removeObserver = { observer -> wdIn.removeObserver(observer.token) }
     )
 
     var pressureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("pressure"),
         getInfo = listOf(wdIn::getPressure, wdOut::getPressure),
-        token = 3,
-        removeObserver = { observer -> wdIn.removeObserver(observer.token) }
     )
 
-    wdIn.registerObserver(temperatureDisplay)
-    wdIn.registerObserver(humidityDisplay)
-    wdIn.registerObserver(pressureDisplay)
+    wdIn.registerObserver(2,temperatureDisplay)
+    wdIn.registerObserver(1, humidityDisplay)
+    wdIn.registerObserver(4, pressureDisplay)
 
-    wdOut.registerObserver(temperatureDisplay)
-    wdOut.registerObserver(humidityDisplay)
-    wdOut.registerObserver(pressureDisplay)
+    wdOut.registerObserver(2, temperatureDisplay)
+    wdOut.registerObserver(3, humidityDisplay)
+    wdOut.registerObserver(10, pressureDisplay)
 
     wdIn.setMeasurements(3.0, 0.7, 760.0)
     wdIn.setMeasurements(4.0, 0.8, 761.0)

@@ -5,9 +5,7 @@ data class SWeatherInfo(
 )
 
 
-class CDisplay(
-    override val token: Token
-) : IObserver<SWeatherInfo> {
+class CDisplay: IObserver<SWeatherInfo> {
     override fun update(name: String, data: SWeatherInfo) {
         println("$name:")
         informationDisplay.display(data.temperature, data.humidity, data.pressure)
@@ -18,8 +16,6 @@ class CDisplay(
 }
 
 class StatsDisplay(
-    val removeObserver: (observer: IObserver<SWeatherInfo>) -> Unit,
-    override val token: Token,
     override val getInfo: List<() -> Double>,
     override val informationDisplay: IInformationDisplay
 ) : IObserver<SWeatherInfo> {
