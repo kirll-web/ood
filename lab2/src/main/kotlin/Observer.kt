@@ -5,25 +5,30 @@
 передаваемого Наблюдателю в метод Update
 */
 
-interface IObserver<T>{
+interface IObserver<T> {
     val informationDisplay: IInformationDisplay
     val getInfo: () -> Double
     open fun update(data: T)
 }
+
+data class InfoItem(val name: String, val value: Double)
+
 /*
 Шаблонный интерфейс IObservable. Позволяет подписаться и отписаться на оповещения, а также
 инициировать рассылку уведомлений зарегистрированным наблюдателям.
 */
-interface IObservable<T>{
+interface IObservable<T> {
     open fun registerObserver(token: Token, observer: IObserver<T>)
     open fun notifyObservers()
     open fun removeObserver(token: Token)
 }
 
 typealias Token = Int
+
 // Реализация интерфейса IObservable
 abstract class Observable<T> : IObservable<T> {
     private var mObservers: MutableMap<Token, IObserver<T>> = mutableMapOf()
+
     // todo токены не должны удаляться за линейное время //fix
     // Классы-наследники должны перегрузить данный метод,
     // в котором возвращать информацию об изменениях в объекте
@@ -39,7 +44,6 @@ abstract class Observable<T> : IObservable<T> {
         temp.putAll(mObservers)
         temp.forEach {
             it.value.update(data)
-            mObservers.remove(it.key)
         }
 
     }
@@ -49,8 +53,8 @@ abstract class Observable<T> : IObservable<T> {
     }
 }
 
-interface IInformationDisplay{
-    fun display(v1: Double, v2: Double, v3: Double)
+interface IInformationDisplay {
+    fun display(args: List<InfoItem>)
 }
 
 

@@ -57,7 +57,7 @@ abstract class Observable<T> : IObservable<T> {
 }
 
 interface IInformationDisplay{
-    fun display(v1: Double, v2: Double, v3: Double)
+    fun display()
 }
 
 
