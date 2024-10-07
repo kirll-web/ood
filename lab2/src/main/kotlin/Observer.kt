@@ -37,11 +37,9 @@ abstract class Observable<T> : IObservable<T> {
         val data = getChangedData()
         val temp = mutableMapOf<Token, IObserver<T>>()
         temp.putAll(mObservers)
-        temp.forEach {
+        temp.toSortedMap().forEach {
             it.value.update(data)
-            mObservers.remove(it.key)
         }
-
     }
 
     override fun removeObserver(token: Token) {
