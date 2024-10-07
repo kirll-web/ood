@@ -15,7 +15,6 @@ class CDisplay : IObserver<SWeatherInfo> {
 
 class StatsDisplay(
     override val informationDisplay: IInformationDisplay,
-    val removeObserver: (observer: IObserver<SWeatherInfo>) -> Unit,
     override val getInfo: () -> Double,
 ) : IObserver<SWeatherInfo> {
     private var mMin: Double = Double.POSITIVE_INFINITY
@@ -35,7 +34,6 @@ class StatsDisplay(
         ++mCountAcc
 
         informationDisplay.display(mMin, mMax, mAcc / mCountAcc.toDouble())
-        removeObserver(this)
     }
 }
 

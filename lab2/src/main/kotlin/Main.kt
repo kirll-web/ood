@@ -8,21 +8,17 @@ fun main() {
 
     val temperatureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("temperature"),
-        getInfo = wd::getTemperature,
-        removeObserver = { observer -> wd.removeObserver(observer) })
+        getInfo = wd::getTemperature
+    )
 
     val humidityDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("humidity"),
-        getInfo = wd::getHumidity,
-        removeObserver = { observer ->
-            wd.removeObserver(observer)
-        }
+        getInfo = wd::getHumidity
     )
 
     val pressureDisplay = StatsDisplay(
         informationDisplay = CInformationDisplay("pressure"),
-        getInfo = wd::getPressure,
-        removeObserver = { observer -> wd.removeObserver(observer) }
+        getInfo = wd::getPressure
     )
 
     wd.registerObserver(temperatureDisplay)
