@@ -1,53 +1,19 @@
-data class SWeatherInfo(
+
+data class WeatherInfo(
     var temperature: Double = 0.0,
     var humidity: Double = 0.0,
-    var pressure: Double = 0.0
+    var pressure: Double = 0.0,
+    var windDirection: Double = 0.0,
+    var windSpeed: Double,
 )
 
 
-class CDisplay: IObserver<SWeatherInfo> {
-    override fun update(name: String, data: SWeatherInfo) {
-        println("$name:")
-        informationDisplay.display(data.temperature, data.humidity, data.pressure)
-    }
-
-    override val informationDisplay: IInformationDisplay = CWeatherDisplay()
-    override val getInfo: List<() -> Double> = emptyList()
-}
-
-class StatsDisplay(
-    override val getInfo: List<() -> Double>,
-    override val informationDisplay: IInformationDisplay
-) : IObserver<SWeatherInfo> {
-    private var mMin: Double = Double.POSITIVE_INFINITY
-    private var mMax: Double = Double.NEGATIVE_INFINITY
-    private var mAcc: Double = 0.0
-    private var mCountAcc: UInt = 0u
-
-
-    override fun update(name: String, data: SWeatherInfo) {
-        getInfo.forEach {
-            println("$name:")
-            val info = it()
-            if (mMin > info) {
-                mMin = info
-            }
-            if (mMax < info) {
-                mMax = info
-            }
-            mAcc += info
-            ++mCountAcc
-
-            informationDisplay.display(mMin, mMax, mAcc / mCountAcc.toDouble())
-        }
-    }
-}
-
-
-class WeatherData(override val name: String) : Observable<SWeatherInfo>() {
+class WeatherData(override val name: String) : Observable<WeatherInfo>() {
     private var mTemperature: Double = 0.0
     private var mHumidity: Double = 0.0
     private var mPressure: Double = 760.0
+    private var mWindSpeed: Double = 0.0
+    private var mWindDirection: Double = 0.0
 
     // Температура в градусах Цельсия
     fun getTemperature(): Double {
@@ -64,41 +30,42 @@ class WeatherData(override val name: String) : Observable<SWeatherInfo>() {
         return mPressure
     }
 
+    fun getWindDirection(): Double {
+        return mWindDirection
+    }
+
+    fun getWindSpeed(): Double {
+        return mWindSpeed
+    }
+
     private fun measurementsChanged() {
         notifyObservers()
     }
 
-    fun setMeasurements(temp: Double, humidity: Double, pressure: Double) {
+    fun setMeasurements(
+        temp: Double,
+        humidity: Double,
+        pressure: Double,
+        windSpeed: Double,
+        windDirection: Double
+    ) {
         mHumidity = humidity
         mTemperature = temp
         mPressure = pressure
+        mWindSpeed = windSpeed
+        mWindDirection = windDirection
 
         measurementsChanged()
     }
 
-    override fun getChangedData() = SWeatherInfo(
+    override fun getChangedData() = WeatherInfo(
         temperature = getTemperature(),
         humidity = getHumidity(),
-        pressure = getPressure()
+        pressure = getPressure(),
+        windSpeed = getWindSpeed(),
+        windDirection = getWindDirection()
     )
 }
 
-class CInformationDisplay(
-    private val name: String,
-) : IInformationDisplay {
-    override fun display(v1: Double, v2: Double, v3: Double) {
-        println("Max $name $v1")
-        println("Min $name $v2")
-        println("Average $name $v3")
-        println("----------------")
-    }
-}
 
-class CWeatherDisplay : IInformationDisplay {
-    override fun display(v1: Double, v2: Double, v3: Double) {
-        println("Current Temp $v1")
-        println("Current Hum $v2")
-        println("Current Pressure $v3")
-        println("----------------")
-    }
-}
+

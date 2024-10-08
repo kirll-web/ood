@@ -6,25 +6,26 @@
 */
 
 interface IObserver<T>{
-    val informationDisplay: IInformationDisplay
-    val getInfo: List<() -> Double>
-    open fun update(name: String, data: T)
+    fun update(data: T, observable: IObservable<T>)
 }
+
+data class InfoItem(val name: String, val value: Double)
+
 /*
 Шаблонный интерфейс IObservable. Позволяет подписаться и отписаться на оповещения, а также
 инициировать рассылку уведомлений зарегистрированным наблюдателям.
 */
-interface IObservable<T>{
-    open fun registerObserver(token: Token, observer: IObserver<T>)
-    open fun notifyObservers()
-    open fun removeObserver(token: Token)
+interface IObservable<T> {
+    val name: String
+    fun registerObserver(token: Token, observer: IObserver<T>)
+    fun notifyObservers()
+    fun removeObserver(token: Token)
 }
 
 typealias Token = Int
 // Реализация интерфейса IObservable
 abstract class Observable<T> : IObservable<T> {
     private var mObservers: MutableMap<Token, IObserver<T>> = mutableMapOf()
-    abstract val name: String
 
 
     abstract fun getChangedData(): T
@@ -38,8 +39,9 @@ abstract class Observable<T> : IObservable<T> {
         val temp = mutableMapOf<Token, IObserver<T>>()
         temp.putAll(mObservers)
         temp.toSortedMap().forEach {
-            it.value.update(name, data)
+            it.value.update(data, this)
         }
+
     }
 
     override fun removeObserver(token: Token) {
@@ -47,8 +49,8 @@ abstract class Observable<T> : IObservable<T> {
     }
 }
 
-interface IInformationDisplay{
-    fun display(v1: Double, v2: Double, v3: Double)
+interface IInformationDisplay {
+    fun display(args: List<InfoItem>)
 }
 
 
