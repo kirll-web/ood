@@ -1,35 +1,21 @@
-package org.example
-
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val wd = WeatherData()
+    var wdIn = WeatherData("WeatherDataIn")
+    var wdOut = WeatherData("WeatherDataOut")
 
-    val display = CDisplay()
-    wd.registerObserver(display)
+    var display = Display(wdIn, wdOut)
+    wdIn.registerObserver(0, display)
+    wdOut.registerObserver(0, display)
 
-    val temperatureDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("temperature"),
-        getInfo = wd::getTemperature
-    )
+    val statsDisplay = StatsDisplay(wdIn, wdOut)
 
-    val humidityDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("humidity"),
-        getInfo = wd::getHumidity
-    )
+    wdIn.registerObserver(2, statsDisplay)
+    wdOut.registerObserver(3, statsDisplay)
 
-    val pressureDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("pressure"),
-        getInfo = wd::getPressure
-    )
+    wdIn.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
+    wdIn.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
 
-    wd.registerObserver(temperatureDisplay)
-    wd.registerObserver(humidityDisplay)
-    wd.registerObserver(pressureDisplay)
-
-    wd.setMeasurements(3.0, 0.7, 760.0)
-    wd.setMeasurements(4.0, 0.8, 761.0)
-
-    wd.removeObserver(temperatureDisplay)
-
-    wd.setMeasurements(10.0, 0.8, 761.0)
-    wd.setMeasurements(-10.0, 0.8, 761.0)
+    wdOut.setMeasurements(20.0, 40.7, 360.0, 50.9, 30.0)
+    wdOut.setMeasurements(40.0, 60.8, 551.0, 100.9, 70.0)
 }
