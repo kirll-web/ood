@@ -13,9 +13,9 @@ fun main() {
     wdIn.registerObserver(2, statsDisplay)
     wdOut.registerObserver(3, statsDisplay)
 
-    wdIn.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
-    wdIn.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
+    wdIn.setMeasurements(3.0, 0.7, 760.0)
+    wdIn.setMeasurements(4.0, 0.8, 761.0)
 
-    wdOut.setMeasurements(20.0, 40.7, 360.0, 50.9, 30.0)
-    wdOut.setMeasurements(40.0, 60.8, 551.0, 100.9, 70.0)
+    wdOut.setMeasurements(20.0, 40.7, 360.0)
+    wdOut.setMeasurements(40.0, 60.8, 551.0)
 }
