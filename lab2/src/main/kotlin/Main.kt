@@ -1,35 +1,34 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     var wdIn = WeatherData("WeatherDataIn")
     var wdOut = WeatherData("WeatherDataOut")
 
-    var display = CDisplay()
-    wdIn.registerObserver(0, display)
-    wdOut.registerObserver(0, display)
+    var display = Display()
+    wdIn.registerObserver(0, WeatherParameter.TEMPERATURE ,display)
+    wdIn.registerObserver(0, WeatherParameter.PRESSURE, display)
+    wdIn.registerObserver(0, WeatherParameter.HUMIDITY, display)
 
     val temperatureDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("temperature"),
+        informationDisplay = InformationDisplay("temperature"),
         getInfo = listOf(wdIn::getTemperature, wdOut::getTemperature)
     )
 
     val humidityDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("humidity"),
+        informationDisplay = InformationDisplay("humidity"),
         getInfo = listOf(wdIn::getHumidity, wdOut::getHumidity),
     )
 
     var pressureDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("pressure"),
+        informationDisplay = InformationDisplay("pressure"),
         getInfo = listOf(wdIn::getPressure, wdOut::getPressure),
     )
 
     val windSpeed = StatsDisplay(
-        informationDisplay = CInformationDisplay("wind  speed"),
+        informationDisplay = InformationDisplay("wind  speed"),
         getInfo = listOf(wdOut::getWindSpeed),
     )
 
-    val windDirection = StatsWindDirectionDisplay(
-        informationDisplay = CInformationDisplay("wind direction"),
+    val windDirection = StatsWindDisplay(
+        informationDisplay = InformationDisplay("wind direction"),
         getInfo = listOf(wdOut::getWindSpeed),
     )
 
