@@ -5,10 +5,8 @@
 передаваемого Наблюдателю в метод Update
 */
 
-interface IObserver<T> {
-    val informationDisplay: IInformationDisplay
-    val getInfo: () -> Double
-    open fun update(data: T)
+interface IObserver<T>{
+    fun update(data: T, observable: IObservable<T>)
 }
 
 data class InfoItem(val name: String, val value: Double)
@@ -18,20 +16,18 @@ data class InfoItem(val name: String, val value: Double)
 инициировать рассылку уведомлений зарегистрированным наблюдателям.
 */
 interface IObservable<T> {
-    open fun registerObserver(token: Token, observer: IObserver<T>)
-    open fun notifyObservers()
-    open fun removeObserver(token: Token)
+    val name: String
+    fun registerObserver(token: Token, observer: IObserver<T>)
+    fun notifyObservers()
+    fun removeObserver(token: Token)
 }
 
 typealias Token = Int
-
 // Реализация интерфейса IObservable
 abstract class Observable<T> : IObservable<T> {
     private var mObservers: MutableMap<Token, IObserver<T>> = mutableMapOf()
 
-    // todo токены не должны удаляться за линейное время //fix
-    // Классы-наследники должны перегрузить данный метод,
-    // в котором возвращать информацию об изменениях в объекте
+
     abstract fun getChangedData(): T
 
     override fun registerObserver(token: Token, observer: IObserver<T>) {
@@ -43,7 +39,7 @@ abstract class Observable<T> : IObservable<T> {
         val temp = mutableMapOf<Token, IObserver<T>>()
         temp.putAll(mObservers)
         temp.toSortedMap().forEach {
-            it.value.update(data)
+            it.value.update(data, this)
         }
 
     }

@@ -1,47 +1,21 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val wd = WeatherData()
+    var wdIn = WeatherData("WeatherDataIn")
+    var wdOut = WeatherData("WeatherDataOut")
 
-    val display = CDisplay()
-    wd.registerObserver(0, display)
+    var display = Display(wdIn, wdOut)
+    wdIn.registerObserver(0, display)
+    wdOut.registerObserver(0, display)
 
-    val temperatureDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("temperature"),
-        getInfo = wd::getTemperature
-    )
+    val statsDisplay = StatsDisplay(wdIn, wdOut)
 
-    val humidityDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("humidity"),
-        getInfo = wd::getHumidity
-    )
+    wdIn.registerObserver(2, statsDisplay)
+    wdOut.registerObserver(3, statsDisplay)
 
-    val pressureDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("pressure"),
-        getInfo = wd::getPressure
-    )
+    wdIn.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
+    wdIn.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
 
-    val windSpeed = StatsDisplay(
-        informationDisplay = CInformationDisplay("wind  speed"),
-        getInfo = wd::getWindSpeed
-    )
-
-    val windDirection = StatsWindDirectionDisplay(
-        informationDisplay = CInformationDisplay("wind direction"),
-        getInfo = wd::getWindDirection
-    )
-
-    wd.registerObserver(2, temperatureDisplay)
-    wd.registerObserver(4, humidityDisplay)
-    wd.registerObserver(1, pressureDisplay)
-    wd.registerObserver(5, windSpeed)
-    wd.registerObserver(3, windDirection)
-
-    wd.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
-    wd.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
-
-    wd.removeObserver(4)
-
-    wd.setMeasurements(10.0, 0.8, 761.0, 50.9, 80.0)
-    wd.setMeasurements(-10.0, 0.8, 761.0, 50.9, 90.0)
+    wdOut.setMeasurements(20.0, 40.7, 360.0, 50.9, 30.0)
+    wdOut.setMeasurements(40.0, 60.8, 551.0, 100.9, 70.0)
 }
