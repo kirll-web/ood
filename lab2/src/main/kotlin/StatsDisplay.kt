@@ -9,9 +9,7 @@ data class SensorsIn(
 data class SensorsOut(
     val temperature: SensorStat = SensorStat("temperature"),
     val humidity: SensorStat = SensorStat("humidity"),
-    val pressure: SensorStat = SensorStat("pressure"),
-    val windSpeed: SensorStat = SensorStat("windSpeed"),
-    val windDirection: SensorStat = SensorStat("windDirection"),
+    val pressure: SensorStat = SensorStat("pressure")
 )
 
 class StatsDisplay(
@@ -55,15 +53,11 @@ class StatsDisplay(
         temperature.update(data.temperature)
         humidity.update(data.humidity)
         pressure.update(data.pressure)
-        windSpeed.update(data.windSpeed)
-        windDirection.update(data.windDirection)
 
         listOf(
             temperature,
             humidity,
             pressure,
-            pressure,
-            windDirection
         ).forEach {
             informationDisplay.display(
                 listOf(

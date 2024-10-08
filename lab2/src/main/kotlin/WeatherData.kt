@@ -2,9 +2,7 @@
 data class WeatherInfo(
     var temperature: Double = 0.0,
     var humidity: Double = 0.0,
-    var pressure: Double = 0.0,
-    var windDirection: Double = 0.0,
-    var windSpeed: Double,
+    var pressure: Double = 0.0
 )
 
 
@@ -12,8 +10,6 @@ class WeatherData(override val name: String) : Observable<WeatherInfo>() {
     private var mTemperature: Double = 0.0
     private var mHumidity: Double = 0.0
     private var mPressure: Double = 760.0
-    private var mWindSpeed: Double = 0.0
-    private var mWindDirection: Double = 0.0
 
     // Температура в градусах Цельсия
     fun getTemperature(): Double {
@@ -30,14 +26,6 @@ class WeatherData(override val name: String) : Observable<WeatherInfo>() {
         return mPressure
     }
 
-    fun getWindDirection(): Double {
-        return mWindDirection
-    }
-
-    fun getWindSpeed(): Double {
-        return mWindSpeed
-    }
-
     private fun measurementsChanged() {
         notifyObservers()
     }
@@ -45,15 +33,11 @@ class WeatherData(override val name: String) : Observable<WeatherInfo>() {
     fun setMeasurements(
         temp: Double,
         humidity: Double,
-        pressure: Double,
-        windSpeed: Double,
-        windDirection: Double
+        pressure: Double
     ) {
         mHumidity = humidity
         mTemperature = temp
         mPressure = pressure
-        mWindSpeed = windSpeed
-        mWindDirection = windDirection
 
         measurementsChanged()
     }
@@ -61,9 +45,7 @@ class WeatherData(override val name: String) : Observable<WeatherInfo>() {
     override fun getChangedData() = WeatherInfo(
         temperature = getTemperature(),
         humidity = getHumidity(),
-        pressure = getPressure(),
-        windSpeed = getWindSpeed(),
-        windDirection = getWindDirection()
+        pressure = getPressure()
     )
 }
 

@@ -22,9 +22,7 @@ class Display(
                     listOf(
                         InfoItem("temperature", data.temperature),
                         InfoItem("humidity", data.humidity),
-                        InfoItem("pressure", data.pressure),
-                        InfoItem("windDirection", data.windDirection),
-                        InfoItem("windSpeed", data.windSpeed),
+                        InfoItem("pressure", data.pressure)
                     )
                 )
             }
