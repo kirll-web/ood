@@ -1,8 +1,14 @@
 
+data class WeatherInfo(
+    var temperature: Double = 0.0,
+    var humidity: Double = 0.0,
+    var pressure: Double = 0.0,
+    var windDirection: Double = 0.0,
+    var windSpeed: Double,
+)
 
-class WeatherData(
-    override val name: String
-) : Observable<WeatherInfo, WeatherParameter>() {
+
+class WeatherData(override val name: String) : Observable<WeatherInfo>() {
     private var mTemperature: Double = 0.0
     private var mHumidity: Double = 0.0
     private var mPressure: Double = 760.0
@@ -61,22 +67,5 @@ class WeatherData(
     )
 }
 
-class InformationDisplay(
-    private val name: String,
-) : IInformationDisplay {
-    override fun display(args: List<InfoItem>) {
-        args.forEach {
-            println("${it.name} $name ${it.value}")
-        }
-        println("----------------")
-    }
-}
 
-class WeatherDisplay : IInformationDisplay {
-    override fun display(args: List<InfoItem>) {
-        args.forEach {
-            println("Current ${it.name} ${it.value}")
-        }
-        println("----------------")
-    }
-}
+

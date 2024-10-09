@@ -5,10 +5,8 @@
 передаваемого Наблюдателю в метод Update
 */
 
-interface IObserver<T, Parameter> {
-    val informationDisplay: IInformationDisplay
-    val getInfo: List<() -> Double>
-    fun update(name: String, data: T, changedParameter: Parameter)
+interface IObserver<T>{
+    fun update(data: T, observable: IObservable<T>)
 }
 
 data class InfoItem(val name: String, val value: Double)
@@ -17,42 +15,31 @@ data class InfoItem(val name: String, val value: Double)
 Шаблонный интерфейс IObservable. Позволяет подписаться и отписаться на оповещения, а также
 инициировать рассылку уведомлений зарегистрированным наблюдателям.
 */
-interface IObservable<T, Parameter> {
-    fun registerObserver(
-        token: Token,
-        parameter: Parameter,
-        observer: IObserver<T, Parameter>
-    )
-    fun notifyObservers(changedParameter: Parameter)
+interface IObservable<T> {
+    val name: String
+    fun registerObserver(token: Token, observer: IObserver<T>)
+    fun notifyObservers()
     fun removeObserver(token: Token)
 }
 
-
 typealias Token = Int
-
 // Реализация интерфейса IObservable
-abstract class Observable<T, Parameter> : IObservable<T, Parameter> {
-    private var mObservers: MutableMap<Token, Pair<Parameter, IObserver<T, Parameter>>> =
-        mutableMapOf()
-    abstract val name: String
+abstract class Observable<T> : IObservable<T> {
+    private var mObservers: MutableMap<Token, IObserver<T>> = mutableMapOf()
 
 
     abstract fun getChangedData(): T
 
-    override fun registerObserver(
-        token: Token,
-        parameter: Parameter,
-        observer: IObserver<T, Parameter>
-    ) {
-        mObservers[token] = parameter to observer
+    override fun registerObserver(token: Token, observer: IObserver<T>) {
+        mObservers[token] = observer
     }
 
-    override fun notifyObservers(changedParameter: Parameter) {
+    override fun notifyObservers() {
         val data = getChangedData()
-        val temp = mutableMapOf<Token, Pair<Parameter, IObserver<T, Parameter>>>()
+        val temp = mutableMapOf<Token, IObserver<T>>()
         temp.putAll(mObservers)
-        temp.forEach {
-            it.value.second.update(name, data, changedParameter)
+        temp.toSortedMap().forEach {
+            it.value.update(data, this)
         }
 
     }
