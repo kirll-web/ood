@@ -10,8 +10,7 @@ data class SensorsOut(
     val temperature: SensorStat = SensorStat("temperature"),
     val humidity: SensorStat = SensorStat("humidity"),
     val pressure: SensorStat = SensorStat("pressure"),
-    val windSpeed: SensorStat = SensorStat("windSpeed"),
-    val windDirection: SensorStat = SensorStat("windDirection"),
+    val wind: SensorWindStats = SensorWindStats()
 )
 
 class StatsDisplay(
@@ -55,15 +54,12 @@ class StatsDisplay(
         temperature.update(data.temperature)
         humidity.update(data.humidity)
         pressure.update(data.pressure)
-        windSpeed.update(data.windSpeed)
-        windDirection.update(data.windDirection)
+        wind.update(data.windDirection, data.windSpeed)
 
         listOf(
             temperature,
             humidity,
-            pressure,
-            pressure,
-            windDirection
+            pressure
         ).forEach {
             informationDisplay.display(
                 listOf(
@@ -73,5 +69,22 @@ class StatsDisplay(
                 )
             )
         }
+
+
+        informationDisplay.display(
+            listOf(
+                InfoItem("Min speed", wind.getMinSpeed()),
+                InfoItem("Max speed", wind.getMaxSpeed()),
+                InfoItem("Average speed", wind.getAverageSpeed()),
+            )
+        )
+
+        informationDisplay.display(
+            listOf(
+                InfoItem("Min direction", wind.getMinDirection()),
+                InfoItem("Max direction", wind.getMaxDirection()),
+                InfoItem("Average direction", wind.getAverageDirection()),
+            )
+        )
     }
 }

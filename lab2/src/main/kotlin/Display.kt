@@ -6,8 +6,8 @@ class Display(
     override fun update(data: WeatherInfo, observable: IObservable<WeatherInfo>) {
         println("${observable.name}:")
 
-        when {
-            observable == weatherDataIn -> {
+        when (observable) {
+            weatherDataIn -> {
                 informationDisplay.display(
                     listOf(
                         InfoItem("temperature", data.temperature),
@@ -16,8 +16,7 @@ class Display(
                     )
                 )
             }
-
-            observable == weatherDataOut -> {
+            weatherDataOut -> {
                 informationDisplay.display(
                     listOf(
                         InfoItem("temperature", data.temperature),
@@ -28,7 +27,6 @@ class Display(
                     )
                 )
             }
-
             else -> Unit
         }
     }
