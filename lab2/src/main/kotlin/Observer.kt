@@ -6,7 +6,7 @@
 */
 
 interface IObserver<T>{
-    fun update(data: T, observable: IObservable<T>)
+    fun update(data: T)
 }
 
 data class InfoItem(val name: String, val value: Double)
@@ -39,7 +39,7 @@ abstract class Observable<T> : IObservable<T> {
         val temp = mutableMapOf<Token, IObserver<T>>()
         temp.putAll(mObservers)
         temp.toSortedMap().forEach {
-            it.value.update(data, this)
+            it.value.update(data)
         }
 
     }
