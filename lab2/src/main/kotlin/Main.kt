@@ -18,6 +18,4 @@ fun main() {
 
     wdIn.setMeasurements(3.0, 0.7)
     wdIn.setMeasurements(null, null, 761.0, 50.9, 70.0)
-
-
 }
