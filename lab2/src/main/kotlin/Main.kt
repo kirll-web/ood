@@ -5,17 +5,19 @@ fun main() {
     var wdOut = WeatherData("WeatherDataOut")
 
     var display = Display(wdIn, wdOut)
-    wdIn.registerObserver(0, display)
-    wdOut.registerObserver(0, display)
+    wdOut.registerObserver(0, WeatherParam.TEMPERATURE to display)
+    wdOut.registerObserver(1, WeatherParam.PRESSURE to display)
 
     val statsDisplay = StatsDisplay(wdIn, wdOut)
 
-    wdIn.registerObserver(2, statsDisplay)
-    wdOut.registerObserver(3, statsDisplay)
+    wdIn.registerObserver(2, WeatherParam.TEMPERATURE to statsDisplay)
+    wdIn.registerObserver(3,WeatherParam.HUMIDITY to statsDisplay)
 
-    wdIn.setMeasurements(3.0, 0.7, 760.0, 50.9, 30.0)
-    wdIn.setMeasurements(4.0, 0.8, 761.0, 50.9, 70.0)
+    wdOut.setMeasurements(20.0, null, 360.0)
+    wdOut.setMeasurements(null, 100.9, null , 70.0)
 
-    wdOut.setMeasurements(20.0, 40.7, 360.0, 50.9, 30.0)
-    wdOut.setMeasurements(40.0, 60.8, 551.0, 100.9, 70.0)
+    wdIn.setMeasurements(3.0, 0.7)
+    wdIn.setMeasurements(null, null, 761.0, 50.9, 70.0)
+
+
 }

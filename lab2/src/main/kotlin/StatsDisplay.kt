@@ -14,16 +14,16 @@ data class SensorsOut(
 )
 
 class StatsDisplay(
-    private val weatherDataIn: IObservable<WeatherInfo>,
-    private val weatherDataOut: IObservable<WeatherInfo>,
-) : IObserver<WeatherInfo> {
+    private val weatherDataIn: IObservable<WeatherInfo, WeatherParam>,
+    private val weatherDataOut: IObservable<WeatherInfo, WeatherParam>,
+) : IObserver<WeatherInfo, WeatherParam> {
     private val mSensorsIn = SensorsIn()
     private val mSensorsOut = SensorsOut()
 
     private val informationDisplay = InformationDisplay()
 
 
-    override fun update(data: WeatherInfo, observable: IObservable<WeatherInfo>){
+    override fun update(data: WeatherInfo, observable: IObservable<WeatherInfo, WeatherParam>){
         when (observable) {
             weatherDataIn -> {
                 updateShowWeatherDataIn(data)

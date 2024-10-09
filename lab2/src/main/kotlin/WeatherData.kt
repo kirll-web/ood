@@ -1,14 +1,13 @@
 
-data class WeatherInfo(
-    var temperature: Double = 0.0,
-    var humidity: Double = 0.0,
-    var pressure: Double = 0.0,
-    var windDirection: Double = 0.0,
-    var windSpeed: Double,
-)
+enum class WeatherParam {
+    TEMPERATURE,
+    HUMIDITY,
+    PRESSURE,
+    WIND_DIRECTION,
+    WIND_SPEED
+}
 
-
-class WeatherData(override val name: String) : Observable<WeatherInfo>() {
+class WeatherData(override val name: String) : Observable<WeatherInfo, WeatherParam>() {
     private var mTemperature: Double = 0.0
     private var mHumidity: Double = 0.0
     private var mPressure: Double = 760.0
@@ -38,24 +37,40 @@ class WeatherData(override val name: String) : Observable<WeatherInfo>() {
         return mWindSpeed
     }
 
-    private fun measurementsChanged() {
-        notifyObservers()
+    private fun measurementsChanged(changedParams: List<WeatherParam>) {
+        notifyObservers(changedParams)
     }
 
     fun setMeasurements(
-        temp: Double,
-        humidity: Double,
-        pressure: Double,
-        windSpeed: Double,
-        windDirection: Double
+        temperature: Double? = null,
+        humidity: Double? = null,
+        pressure: Double? = null,
+        windSpeed: Double? = null,
+        windDirection: Double? = null
     ) {
-        mHumidity = humidity
-        mTemperature = temp
-        mPressure = pressure
-        mWindSpeed = windSpeed
-        mWindDirection = windDirection
+        val changedParam = mutableListOf<WeatherParam>()
+        humidity?.let {
+            mHumidity = humidity
+            changedParam.add(WeatherParam.HUMIDITY)
+        }
+        temperature?.let {
+            mTemperature = temperature
+            changedParam.add(WeatherParam.TEMPERATURE)
+        }
+        pressure?.let {
+            mPressure = pressure
+            changedParam.add(WeatherParam.PRESSURE)
+        }
+        windSpeed?.let {
+            mWindSpeed = windSpeed
+            changedParam.add(WeatherParam.WIND_SPEED)
+        }
+        windDirection?.let {
+            mWindDirection = windDirection
+            changedParam.add(WeatherParam.WIND_DIRECTION)
+        }
 
-        measurementsChanged()
+        measurementsChanged(changedParam.toList())
     }
 
     override fun getChangedData() = WeatherInfo(

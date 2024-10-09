@@ -1,9 +1,9 @@
 class Display(
-    private val weatherDataIn: IObservable<WeatherInfo>,
-    private val weatherDataOut: IObservable<WeatherInfo>
-) : IObserver<WeatherInfo> {
+    private val weatherDataIn: IObservable<WeatherInfo, WeatherParam>,
+    private val weatherDataOut: IObservable<WeatherInfo, WeatherParam>
+) : IObserver<WeatherInfo, WeatherParam> {
     private val informationDisplay: IInformationDisplay = WeatherDisplay()
-    override fun update(data: WeatherInfo, observable: IObservable<WeatherInfo>) {
+    override fun update(data: WeatherInfo, observable: IObservable<WeatherInfo, WeatherParam>) {
         println("${observable.name}:")
 
         when (observable) {
