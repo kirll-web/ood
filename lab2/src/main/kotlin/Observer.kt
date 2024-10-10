@@ -8,16 +8,16 @@
 interface IObserver<T>{
     val informationDisplay: IInformationDisplay
     val getInfo: () -> Double
-    open fun update(data: T)
+    fun update(data: T)
 }
 /*
 Шаблонный интерфейс IObservable. Позволяет подписаться и отписаться на оповещения, а также
 инициировать рассылку уведомлений зарегистрированным наблюдателям.
 */
 interface IObservable<T>{
-    open fun registerObserver(token: Token, observer: IObserver<T>)
-    open fun notifyObservers()
-    open fun removeObserver(token: Token)
+    fun registerObserver(token: Token, observer: IObserver<T>)
+    fun notifyObservers()
+    fun removeObserver(token: Token)
 }
 
 typealias Token = Int
@@ -30,7 +30,8 @@ abstract class Observable<T> : IObservable<T> {
     abstract fun getChangedData(): T
 
     override fun registerObserver(token: Token, observer: IObserver<T>) {
-        mObservers[token] = observer
+        if(!mObservers.values.contains(observer)) mObservers[token] = observer
+        else println("this observer already exists")
     }
 
     override fun notifyObservers() {
