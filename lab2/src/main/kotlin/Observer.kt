@@ -31,7 +31,8 @@ abstract class Observable<T> : IObservable<T> {
     abstract fun getChangedData(): T
 
     override fun registerObserver(token: Token, observer: IObserver<T>) {
-        mObservers[token] = observer
+        if(!mObservers.values.contains(observer)) mObservers[token] = observer
+        else println("this observer already exists")
     }
 
     override fun notifyObservers() {
