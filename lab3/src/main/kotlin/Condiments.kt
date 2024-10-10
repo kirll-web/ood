@@ -20,8 +20,8 @@ class Cinnamon(beverage: IBeverage) : CondimentDecorator(beverage) {
 
 // Лимонная добавка
 class Lemon(
-    private val quantity: UInt,
-    beverage: IBeverage
+    beverage: IBeverage,
+    private val quantity: UInt
 ) : CondimentDecorator(beverage) {
     override fun getCondimentCost(): Double = 10.0 * quantity.toDouble()
     override fun getCondimentDescription() = "Lemon x$quantity"
@@ -55,7 +55,7 @@ class IceCubes(
 enum class SyrupType {
     Chocolate,    // Шоколадный
     Maple,        // Кленовый
-};
+}
 
 // Добавка "Сироп"
 class CSyrup(

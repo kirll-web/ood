@@ -7,7 +7,7 @@
 
 interface IObserver<T>{
     val informationDisplay: IInformationDisplay
-    val getInfo: () -> Double //() -> Double
+    val getInfo: () -> Double
     open fun update(data: T)
 }
 

@@ -14,13 +14,15 @@ class CDisplay : IObserver<SWeatherInfo> {
 }
 
 class StatsDisplay(
-    override val informationDisplay: IInformationDisplay,
+    val name: String,
     override val getInfo: () -> Double,
 ) : IObserver<SWeatherInfo> {
     private var mMin: Double = Double.POSITIVE_INFINITY
     private var mMax: Double = Double.NEGATIVE_INFINITY
     private var mAcc: Double = 0.0
     private var mCountAcc: UInt = 0u
+
+    override val informationDisplay: IInformationDisplay = CInformationDisplay(name)
 
     override fun update(data: SWeatherInfo) {
         val info = getInfo()

@@ -7,17 +7,17 @@ fun main() {
     wd.registerObserver(display)
 
     val temperatureDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("temperature"),
+       name = "temperature",
         getInfo = wd::getTemperature
     )
 
     val humidityDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("humidity"),
+        name = "humidity",
         getInfo = wd::getHumidity
     )
 
     val pressureDisplay = StatsDisplay(
-        informationDisplay = CInformationDisplay("pressure"),
+        name = "pressure",
         getInfo = wd::getPressure
     )
 
