@@ -50,8 +50,8 @@ abstract class Observable<T> : IObservable<T> {
     }
 }
 
-interface IInformationDisplay {
-    fun display(args: List<InfoItem>)
+interface IInformationDisplay<T> {
+    fun display(args: List<T>)
 }
 
 

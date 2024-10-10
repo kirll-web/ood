@@ -42,7 +42,7 @@ class StatsDisplay(
             informationDisplay.display(
                 listOf(
                     InfoItem("Min ${it.name}", it.getMin()),
-                    InfoItem("Max ${it.name}", it.getMin()),
+                    InfoItem("Max ${it.name}", it.getMax()),
                     InfoItem("Average ${it.name}", it.getAverage()),
                 )
             )

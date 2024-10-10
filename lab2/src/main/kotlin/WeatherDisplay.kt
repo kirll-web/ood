@@ -1,4 +1,4 @@
-class WeatherDisplay : IInformationDisplay {
+class WeatherDisplay : IInformationDisplay<InfoItem> {
     override fun display(args: List<InfoItem>) {
         args.forEach {
             println("Current ${it.name} ${it.value}")

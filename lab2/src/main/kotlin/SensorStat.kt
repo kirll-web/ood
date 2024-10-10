@@ -19,6 +19,6 @@ class SensorStat(
     }
 
     fun getMin() = mMin
-    fun getMax() = mMin
+    fun getMax() = mMax
     fun getAverage() = mAcc / mCountAcc.toDouble()
 }
