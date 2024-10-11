@@ -1,25 +1,19 @@
 
-data class SensorsIn(
+data class Sensors(
     val temperature: SensorStat = SensorStat("temperature"),
     val humidity: SensorStat = SensorStat("humidity"),
     val pressure: SensorStat = SensorStat("pressure"),
 )
 
 
-data class SensorsOut(
-    val temperature: SensorStat = SensorStat("temperature"),
-    val humidity: SensorStat = SensorStat("humidity"),
-    val pressure: SensorStat = SensorStat("pressure")
-)
-
 class StatsDisplay(
     private val weatherDataIn: IObservable<WeatherInfo>,
     private val weatherDataOut: IObservable<WeatherInfo>,
 ) : IObserver<WeatherInfo> {
-    private val mSensorsIn = SensorsIn()
-    private val mSensorsOut = SensorsOut()
+    private val mSensorsIn = Sensors()
+    private val mSensorsOut = Sensors()
 
-    private val informationDisplay = InformationDisplay()
+    private val mInformationDisplay = InformationDisplay()
 
 
     override fun update(data: WeatherInfo, observable: IObservable<WeatherInfo>){
@@ -39,7 +33,7 @@ class StatsDisplay(
         humidity.update(data.humidity)
         pressure.update(data.pressure)
         listOf(temperature, humidity, pressure).forEach {
-            informationDisplay.display(
+            mInformationDisplay.display(
                 listOf(
                     InfoItem("Min ${it.name}", it.getMin()),
                     InfoItem("Max ${it.name}", it.getMax()),
@@ -59,10 +53,10 @@ class StatsDisplay(
             humidity,
             pressure,
         ).forEach {
-            informationDisplay.display(
+            mInformationDisplay.display(
                 listOf(
                     InfoItem("Min ${it.name}", it.getMin()),
-                    InfoItem("Max ${it.name}", it.getMin()),
+                    InfoItem("Max ${it.name}", it.getMax()),
                     InfoItem("Average ${it.name}", it.getAverage()),
                 )
             )
