@@ -20,11 +20,20 @@ class Cinnamon(beverage: IBeverage) : CondimentDecorator(beverage) {
 
 // Лимонная добавка
 class Lemon(
-    private val quantity: UInt,
-    beverage: IBeverage
+    beverage: IBeverage,
+    private val quantity: UInt
 ) : CondimentDecorator(beverage) {
     override fun getCondimentCost(): Double = 10.0 * quantity.toDouble()
     override fun getCondimentDescription() = "Lemon x$quantity"
+}
+
+enum class Condiments {
+    ICE_CUBES,
+    SYRUP,
+    LEMON,
+    CINNAMON,
+    CHOCOLATE_CRUMBS,
+    COCONUT_FLAKES
 }
 
 
@@ -55,12 +64,11 @@ class IceCubes(
 enum class SyrupType {
     Chocolate,    // Шоколадный
     Maple,        // Кленовый
-};
+}
 
 // Добавка "Сироп"
-class CSyrup(
+class Syrup(
     beverage: IBeverage,
-    private val quantity: UInt,
     private val syrup: SyrupType
 ) : CondimentDecorator(beverage) {
     override fun getCondimentCost(): Double = 15.0
@@ -78,15 +86,15 @@ class ChocolateCrumbs(
 ) : CondimentDecorator(beverage) {
     override fun getCondimentCost(): Double = 2.0 * mass.toDouble()
 
-    override fun getCondimentDescription() = "Chocolate crumbs $mass g";
+    override fun getCondimentDescription() = "Chocolate crumbs $mass g"
 }
 
 // Кокосовая стружка
-class CCoconutFlakes(
+class CoconutFlakes(
     beverage: IBeverage,
     private val mass: UInt,
 ) : CondimentDecorator(beverage) {
     override fun getCondimentCost(): Double = 1.0 * mass.toDouble()
 
-    override fun getCondimentDescription() = "Coconut flakes $mass g";
+    override fun getCondimentDescription() = "Coconut flakes $mass g"
 }
