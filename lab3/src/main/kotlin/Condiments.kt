@@ -27,19 +27,9 @@ class Lemon(
     override fun getCondimentDescription() = "Lemon x$quantity"
 }
 
-enum class Condiments {
-    ICE_CUBES,
-    SYRUP,
-    LEMON,
-    CINNAMON,
-    CHOCOLATE_CRUMBS,
-    COCONUT_FLAKES
-}
-
-
 enum class IceCubeType {
-    Dry,    // Сухой лед (для суровых сибирских мужиков)
-    Water    // Обычные кубики из воды
+    DRY,    // Сухой лед (для суровых сибирских мужиков)
+    WATER    // Обычные кубики из воды
 }
 
 // Добавка "Кубики льда". Определяется типом и количеством кубиков, что влияет на стоимость
@@ -47,16 +37,16 @@ enum class IceCubeType {
 class IceCubes(
     beverage: IBeverage,
     private val quantity: UInt,
-    private val type: IceCubeType = IceCubeType.Water
+    private val type: IceCubeType = IceCubeType.WATER
 ) : CondimentDecorator(beverage) {
     override fun getCondimentCost(): Double = when (type) {
-        IceCubeType.Dry -> 10.0
-        IceCubeType.Water -> 5.0
+        IceCubeType.DRY -> 10.0
+        IceCubeType.WATER -> 5.0
     }.also { it * quantity.toDouble() }
 
     override fun getCondimentDescription() = when (type) {
-        IceCubeType.Dry -> "Dry"
-        IceCubeType.Water -> "Water"
+        IceCubeType.DRY -> "DRY"
+        IceCubeType.WATER -> "WATER"
     }.also { "$it ice cubes x$quantity" }
 }
 
@@ -98,3 +88,67 @@ class CoconutFlakes(
 
     override fun getCondimentDescription() = "Coconut flakes $mass g"
 }
+
+
+// Кокосовая стружка
+class Cream(
+    beverage: IBeverage
+) : CondimentDecorator(beverage) {
+    override fun getCondimentCost(): Double = 25.0
+
+    override fun getCondimentDescription() = "Cream"
+}
+
+//ликёр
+class Liquor(
+    beverage: IBeverage,
+    private val liquorType: LiquorType
+) : CondimentDecorator(beverage) {
+    override fun getCondimentCost(): Double = 50.0
+
+    override fun getCondimentDescription() = "${liquorType.getDescription()} Liquor"
+}
+
+enum class LiquorType(private val value: String) {
+    CHOCOLATE("Chocolate"),
+    NUTTY("Nutty");
+
+    fun getDescription() = when (value) {
+        CHOCOLATE.value -> 50.0
+        NUTTY.value -> 50.0
+        else -> throw IllegalArgumentException("Incorrect size")
+    }
+}
+
+
+class ChocolateSlices(
+    beverage: IBeverage,
+    amountSlices: UInt
+) : CondimentDecorator(beverage) {
+
+    private var mAmountSlices: UInt = 0U
+
+    init {
+        when {
+            amountSlices > MAX_AMOUNT_SLICES -> {
+                println("incorrect amount slices. Max: $MAX_AMOUNT_SLICES")
+                mAmountSlices = MAX_AMOUNT_SLICES
+            }
+            else -> mAmountSlices = amountSlices
+        }
+    }
+
+    override fun getCondimentCost(): Double = 10.0 * mAmountSlices.toDouble()
+
+    override fun getCondimentDescription() = "$ChocolateSlices x$mAmountSlices"
+
+    companion object {
+        const val MAX_AMOUNT_SLICES = 5U
+    }
+}
+
+
+/*Сливки (25р)
+Шоколад (10р за дольку, максимум: 5 долек)
+Ликер (2 типа – ореховый и шоколадный). 50 рублей вне зависимости от типа
+Описание добавок должно включать в себя подробности, специфичные для добавки (количество долек шоколада и тип ликера).*/

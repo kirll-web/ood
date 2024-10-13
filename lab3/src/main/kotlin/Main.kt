@@ -1,6 +1,5 @@
 package org.example
 
-import java.util.UUID
 import kotlin.reflect.full.primaryConstructor
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -41,13 +40,13 @@ fun getIceCubesType(): IceCubeType {
     var number: UInt
     var type: IceCubeType
     while (true) {
-        println("Ice Cubes Type: 1 - Dry, 2 - Water ")
+        println("Ice Cubes Type: 1 - DRY, 2 - WATER ")
         try {
             number = readln().toUInt()
 
             type = when (number) {
-                1U -> IceCubeType.Dry
-                2U -> IceCubeType.Water
+                1U -> IceCubeType.DRY
+                2U -> IceCubeType.WATER
                 else -> {
                     println("Incorrect input")
                     continue
@@ -75,6 +74,33 @@ fun getSyrupType(): SyrupType {
             type = when (number) {
                 1U -> SyrupType.Chocolate
                 2U -> SyrupType.Maple
+                else -> {
+                    println("Incorrect input")
+                    continue
+                }
+            }
+
+            break
+        } catch (ex: Exception) {
+            println("Incorrect input")
+            continue
+        }
+    }
+    return type
+}
+
+fun getLiquorType(): LiquorType {
+    var number: UInt
+    var type: LiquorType
+    while (true) {
+        println("Syrup Type: 1 - Chocolate, 2 - Nutty ")
+        try {
+            number = readln().toUInt()
+
+            type = when (number) {
+                1U -> LiquorType.CHOCOLATE
+                2U -> LiquorType.NUTTY
+                
                 else -> {
                     println("Incorrect input")
                     continue
@@ -174,7 +200,16 @@ fun dialogWithUser() {
 
     var condimentChoice: Int
     while (true) {
-        println("1 - Lemon, 2 - Cinnamon, 3 - IceCubes, 4 - ChocolateCrumbs, 5 - CoconutFlakes, 6 - Syrup, 0 - Checkout")
+        println("1 - Lemon, " +
+                "2 - Cinnamon, " +
+                "3 - IceCubes, " +
+                "4 - ChocolateCrumbs, " +
+                "5 - CoconutFlakes, " +
+                "6 - Syrup, " +
+                "7 - Cream, " +
+                "8 - Chocolate slices, " +
+                "9 - Liquor, " +
+                "0 - Checkout")
 
         try {
             condimentChoice = readln().toInt()
@@ -191,6 +226,9 @@ fun dialogWithUser() {
             4 -> beverage += makeCondiment<ChocolateCrumbs>(getAmount("ChocolateCrumbs"))
             5 -> beverage += makeCondiment<CoconutFlakes>(getAmount("CoconutFlakes"))
             6 -> beverage += makeCondiment<Syrup>(getSyrupType())
+            7 -> beverage += makeCondiment<Cream>()
+            8 -> beverage += makeCondiment<ChocolateSlices>(getAmount("ChocolateSlices"))
+            9 -> beverage += makeCondiment<Liquor>(getLiquorType())
 
             0 -> break
         }
