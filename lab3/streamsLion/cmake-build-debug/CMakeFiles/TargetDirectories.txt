@@ -1,3 +1,0 @@
-X:/labsOOD/lab3/streamsLion/cmake-build-debug/CMakeFiles/streamsLion.dir
-X:/labsOOD/lab3/streamsLion/cmake-build-debug/CMakeFiles/edit_cache.dir
-X:/labsOOD/lab3/streamsLion/cmake-build-debug/CMakeFiles/rebuild_cache.dir

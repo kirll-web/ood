@@ -1,0 +1,1 @@
+fc .gitignore 3.txt

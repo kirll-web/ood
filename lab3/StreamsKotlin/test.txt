@@ -1,0 +1,8 @@
+--encrypt 100500 --encrypt 100500 .gitignore 2.txt
+--decrypt 100500 --decrypt 100500 2.txt 3.txt
+
+--encrypt 100500 --encrypt 3 .gitignore 2.txt
+--decrypt 100500 --decrypt 3 2.txt 3.txt
+
+ --encrypt 3 --encrypt 100500 --compress .gitignore 2.txt
+ --decrypt 3 --decrypt 100500 --decompress 2.txt 3.txt
