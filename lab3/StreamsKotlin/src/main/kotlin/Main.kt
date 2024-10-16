@@ -67,7 +67,7 @@ fun getKeyValueCommand(key: CommandKey, value: String) = try {
 } catch (ex: Exception) {
     throw IllegalArgumentException("key for decrypt is not number")
 }
-
+    //todo сделать диаграмму классов
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {

@@ -28,7 +28,6 @@ class Crypto(
 
     fun decrypt(data: UByte) = mDecrypt[data.toInt()]
 
-
     companion object {
         const val TABLE_SIZE = 256
     }
