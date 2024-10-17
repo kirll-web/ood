@@ -4,8 +4,11 @@ import org.example.OutputDataStreamDecorator
 class CompressOutputDataStream (
     stream: OutputDataStream
 ): OutputDataStreamDecorator(stream) {
-    private var mLastByte: UByte = 0U
-    private var mCount: UByte = 0U
+    private var mLastByte: UByte? = null
+    private var mCountUniq: UByte = 0U
+    private var mCountNotUniq: UByte = 0U
+    private var mNotUniqBytes: MutableList<UByte> = mutableListOf()
+
 
     override fun writeByte(data: UByte) {
         writeBlock(mutableListOf(data), 1)
@@ -16,15 +19,34 @@ class CompressOutputDataStream (
 
         while (pos < size)
         {
-            if (mCount != 0.toUByte() && mLastByte != srcData[pos])
+            if(mLastByte == null) {
+                mLastByte = srcData[pos] as UByte
+                continue
+            }
+
+            if(mLastByte != null && mLastByte != srcData[pos]) {
+                ++mCountNotUniq
+                mNotUniqBytes.add(mLastByte!!)
+
+                if(mCountUniq > 0.toUByte()) {
+                    writeCompressedBlock()
+                }
+            }
+
+            if (mLastByte != null && mLastByte == srcData[pos])
+            {
+                ++mCountUniq
+                if(mCountUniq > 0.toUByte()) {
+                    writeCompressedBlock()
+                }
+            }
+
+            if (mCountUniq == 255.toUByte())
             {
                 writeCompressedBlock()
             }
 
-            mLastByte = srcData[pos] as UByte
-            ++mCount
-
-            if (mCount == 255.toUByte())
+            if (mCountNotUniq == 255.toUByte())
             {
                 writeCompressedBlock()
             }
@@ -37,9 +59,10 @@ class CompressOutputDataStream (
     }
 
     private fun writeCompressedBlock() {
-        super.writeByte(mLastByte)
-        super.writeByte(mCount)
+        if(mCountUniq != 0.toUByte()) {
 
-        mCount = 0U
+        }
+
+        mCountUniq = 0U
     }
 }
