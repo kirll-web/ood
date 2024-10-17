@@ -2,18 +2,17 @@ package org.example
 
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 
 class FileOutputDataStream(
     fileName: String
 ): OutputDataStream {
     private val mFileStream: FileOutputStream
     private var mClose = false
+    private var mFile: File = File(fileName)
 
     init {
-        val file = File(fileName)
-        if(!file.exists()) throw IOException("The file with name $fileName is cannot be openned")
-        mFileStream = FileOutputStream(file)
+        if(!mFile.exists()) mFile.createNewFile()
+        mFileStream = FileOutputStream(mFile)
     }
 
     override fun writeByte(data: UByte) {

@@ -1,8 +1,5 @@
 package org.example
 
-class Beverages {
-}
-
 // Базовая реализация напитка, предоставляющая его описание
 abstract class Beverage(
     private val description: String

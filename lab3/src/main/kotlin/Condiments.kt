@@ -52,8 +52,8 @@ class IceCubes(
 
 // Тип сиропа
 enum class SyrupType {
-    Chocolate,    // Шоколадный
-    Maple,        // Кленовый
+    CHOCOLATE,    // Шоколадный
+    MAPLE        // Кленовый
 }
 
 // Добавка "Сироп"
@@ -64,8 +64,8 @@ class Syrup(
     override fun getCondimentCost(): Double = 15.0
 
     override fun getCondimentDescription() = when (syrup) {
-        SyrupType.Chocolate -> "Chocolate"
-        SyrupType.Maple -> "Maple"
+        SyrupType.CHOCOLATE -> "Chocolate"
+        SyrupType.MAPLE -> "Maple"
     }.also { "$syrup syrup" }
 }
 
