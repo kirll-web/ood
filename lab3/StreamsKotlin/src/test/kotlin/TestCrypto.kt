@@ -20,7 +20,4 @@ class TestCrypto {
         assertEquals(crypto.decrypt(crypto.crypt(test5)), test5)
     }
 
-
-
-
 }
