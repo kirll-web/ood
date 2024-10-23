@@ -4,7 +4,7 @@ package org.example
 abstract class CondimentDecorator(private val beverage: IBeverage) : IBeverage {
     override fun getDescription() = "${beverage.getDescription()}, ${getCondimentDescription()}"
 
-    override fun getCost() = beverage.getCost() + getCondimentCost()
+    override fun getCost() = beverage.getCost() + getCondimentCost() // todo шаблонный метод используется здесь
 
     // Стоимость и описание добавки вычисляется в классах конкретных декораторов
     abstract fun getCondimentDescription(): String
@@ -98,3 +98,4 @@ class CoconutFlakes(
 
     override fun getCondimentDescription() = "Coconut flakes $mass g"
 }
+//найти патерн шаблонный метод
