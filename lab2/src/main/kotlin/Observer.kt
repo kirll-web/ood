@@ -23,23 +23,34 @@ interface IObservable<T>{
 typealias Token = Int
 // Реализация интерфейса IObservable
 abstract class Observable<T> : IObservable<T> {
-    private var mObservers: MutableMap<Token, IObserver<T>> = mutableMapOf()
+    private var mObservers: MutableMap<Token, List<IObserver<T>>> = mutableMapOf()
+    private var mTokensObservers: MutableMap<IObserver<T>, Token> = mutableMapOf()
     // todo токены не должны удаляться за линейное время //fix
     // Классы-наследники должны перегрузить данный метод,
     // в котором возвращать информацию об изменениях в объекте
     abstract fun getChangedData(): T
 
     override fun registerObserver(token: Token, observer: IObserver<T>) {
-        if(!mObservers.values.contains(observer)) mObservers[token] = observer
+        if(!mTokensObservers.containsKey(observer)) {
+            when {
+                mObservers.containsKey(token) -> mObservers[token]?.let {
+                    mObservers[token] = it.plus(observer)
+                }
+                else -> mObservers[token] = listOf(observer)
+            }
+            mTokensObservers[observer] = token
+        }
         else println("this observer already exists")
     }
 
     override fun notifyObservers() {
         val data = getChangedData()
-        val temp = mutableMapOf<Token, IObserver<T>>()
+        val temp = mutableMapOf<Token, List<IObserver<T>>>()
         temp.putAll(mObservers)
         temp.toSortedMap().forEach {
-            it.value.update(data)
+            it.value.forEach { observer ->
+                observer.update(data)
+            }
         }
     }
 
