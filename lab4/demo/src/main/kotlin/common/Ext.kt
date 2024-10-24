@@ -1,5 +1,6 @@
 package common
 
+import Color.ShapeColor
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import java.util.regex.Pattern
@@ -17,13 +18,21 @@ fun String.isDouble(name: String) = try {
     false
 }
 
+fun String.isUInt(name: String) = try {
+    this.toUInt()
+    true
+} catch (ex: Exception) {
+    println("$name is not unsigned number")
+    false
+}
+
+
 fun String.mySplit() = this.split(" ")
 
 fun getOffset(x: Double, y: Double) = Offset(x = x.toFloat(), y = y.toFloat())
 
 fun Point.getOffset() = Offset(x = x.toFloat(), y = y.toFloat())
 
-fun String.isHexColorCode() = Pattern.matches("#[A-Fa-f0-9]{6}", this)
 
 
 fun List<String>.isEnoughArgs(minElems: Int) = when {

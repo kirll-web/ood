@@ -1,4 +1,7 @@
 import Canvas.Canvas
+import Designer.Designer
+import IShapeFactory.ShapeFactory
+import Painter.Painter
 import Picture.PictureDraft
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
@@ -13,7 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import ui.Controller
 
 @Composable
 @Preview
@@ -30,15 +32,24 @@ fun App() {
         )
     }
 
+
     val rememberText = rememberTextMeasurer()
 
-    val controller = Controller(canvas, pictureDraft)
+    val shapeFactory = ShapeFactory()
+    val designer = Designer(shapeFactory)
 
+    val scope = CoroutineScope(Job() + Dispatchers.IO)
+    val painter = Painter()
 
+    scope.launch {
+        val draft = designer.createDraft()
+        painter.drawPicture(draft, canvas)
+        drawerState = canvas.shapes
+    }
 
     MaterialTheme {
+        pictureDraft
         drawerState
-
         Canvas(Modifier.fillMaxSize()) {
             canvas.draw(this, rememberText)
         }

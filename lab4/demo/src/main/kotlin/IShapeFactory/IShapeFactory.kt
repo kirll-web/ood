@@ -4,5 +4,5 @@ import shape.Shape
 
 
 interface IShapeFactory {
-    fun createShape(descr: String): Shape
+    fun createShape(descr: String):  Shape?
 }

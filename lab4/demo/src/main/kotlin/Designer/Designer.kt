@@ -1,29 +1,27 @@
 package Designer
 
+import IShapeFactory.IShapeFactory
 import Picture.PictureDraft
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import java.util.*
 
 class Designer(
-    val shapeFacroty: IShapeFactory
+    private val shapeFactory: IShapeFactory
 ): IDesigner {
-    override fun createDraft(): PictureDraft {
+    override suspend fun createDraft(): PictureDraft {
         val draft = PictureDraft()
 
-        val scope = CoroutineScope(Job() + Dispatchers.IO)
-
-        scope.launch {
-            while (true) {
-                try {
-                    val line = readLine()
-                    draft.addShape(shapeFacroty.createShape(line))
-                } catch(ex: Exception) {
-                    println(ex.message)
-                }
+        while (true) {
+            try {
+                val line = readln()
+                if (line == EXIT) break
+                shapeFactory.createShape(line)?.let { draft.addShape(it) }
+            } catch(ex: Exception) {
+                println(ex.message)
             }
         }
+        return  draft
+    }
+
+    companion object {
+        const val EXIT = "exit"
     }
 }

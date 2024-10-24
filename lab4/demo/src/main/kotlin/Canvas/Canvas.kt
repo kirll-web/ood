@@ -1,20 +1,19 @@
 package Canvas
 
-import Color.Color
+import Color.ShapeColor
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.TextMeasurer
 import common.Point
 import common.getOffset
 
 class Canvas : ICanvas {
-    private var mColor = Color(Color.DEFAULT_COLOR)
-    private var mCursor = Point(0.0, 0.0)
+    private var mColor = ShapeColor.RED
     private var mShapes: List<IPrimitive> = listOf()
     val shapes
         get() = mShapes
 
-    override fun setColor(c: String) {
-        mColor.changeColor(c)
+    override fun setColor(color: ShapeColor) {
+        mColor = color
     }
 
     override  fun drawLine(from: Point, to: Point) {
