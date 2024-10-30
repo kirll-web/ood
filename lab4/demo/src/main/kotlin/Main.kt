@@ -1,5 +1,6 @@
 import Canvas.Canvas
 import Designer.Designer
+import Designer.IDesigner
 import IShapeFactory.ShapeFactory
 import Painter.Painter
 import Picture.PictureDraft
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 @Preview
 fun App() {
     val canvas = Canvas()
-    var pictureDraft by remember {
+    val pictureDraft by remember {
         mutableStateOf(
             PictureDraft()
         )
@@ -36,7 +37,7 @@ fun App() {
     val rememberText = rememberTextMeasurer()
 
     val shapeFactory = ShapeFactory()
-    val designer = Designer(shapeFactory)
+    val designer: IDesigner = Designer(shapeFactory)
 
     val scope = CoroutineScope(Job() + Dispatchers.IO)
     val painter = Painter()

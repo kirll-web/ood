@@ -15,8 +15,8 @@ class Rectangle(
         super.draw(canvas)
         canvas.drawLine(leftTop, Point(leftTop.x + rightBottom.x, leftTop.y))
         canvas.drawLine(Point(leftTop.x + rightBottom.x, leftTop.y), rightBottom)
-        canvas.drawLine(rightBottom, Point(rightBottom.x - leftTop.x, rightBottom.y))
-        canvas.drawLine(Point(rightBottom.x - leftTop.x, rightBottom.y), leftTop)
+        canvas.drawLine(rightBottom, Point(leftTop.x, rightBottom.y))
+        canvas.drawLine(Point(leftTop.x, rightBottom.y), leftTop)
     }
 
     fun getLeftTop() = leftTop

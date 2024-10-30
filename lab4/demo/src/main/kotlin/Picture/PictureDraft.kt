@@ -1,6 +1,5 @@
 package Picture
 
-import Canvas.ICanvas
 import shape.Shape
 
 class PictureDraft: IPictureDraft {
@@ -8,10 +7,6 @@ class PictureDraft: IPictureDraft {
 
     fun addShape(shape: Shape) {
         mShapes = mShapes.plus(shape)
-    }
-
-    fun drawPicture(canvas: ICanvas) = mShapes.forEach {
-        it.draw(canvas)
     }
 
     override fun getShapeCount() = mShapes.count()
